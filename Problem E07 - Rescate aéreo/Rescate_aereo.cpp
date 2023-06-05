@@ -13,7 +13,7 @@ PRECONDICION: {
 }
 
 POSTCONDICION: {
-    seg = max p,q : 0 <= p <= q < size : (forall w1 : p <= w1 <= q : v[w1] > altura) : q - p (el más a la derecha)
+    seg = p,q : 0 <= p <= q < size : (forall w1 : p <= w1 <= q : v[w1] > altura) : q - p (el que esta más a la derecha)
     &&
     maxSeg = max p,q : 0 <= p <= q < size : (forall w : p <= w <= q : v[w] > altura) : q - p
     &&
