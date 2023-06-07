@@ -3,65 +3,63 @@
 #include<vector>
 using namespace std;
 
-
 /*
-* A) todosPares(v,p,q) = forall j : p <= j <= q : v[j] % 2 == 0
-* B) noMas(v,p,q,k) = todosPares(v,p,q) <=> q - p <= k
-* 
-* ESPECIFICACION: fun resolver(vector<int>const&v, int size, int k) ret int
-*
-* PRECONDICION: {
-* size >= 0
-* &&
-* forall u : 0 <= u < size : v[u] > 0
-* &&
-* k >= 0
-* }
-*
-* POSTCONDICION: {
-* pares = p,q : 0 <= p <= q < size : todosPares(v,p,q) : q - p
-* &&
-* inicio = max w : 0 <= w < size : (max p,q : 0 <= p <= q < size : noMas(v,p,q,k) : q - p + 1) : w
-* }
-*
-* INVARIANTE: {
-* 0 <= i <= size
-* &&
-* pares = p,q : 0 <= p <= q < i : todosPares(v,p,q) : q - p
-* &&
-* inicio = max w1 : 0 <= w1 < i : (max p,q : 0 <= p <= q < i : noMas(v,p,q,k) : q - p + 1) : w1
-* }
-*
-* FUNCION DE COTA: size - i
-* ANALISIS DEL COSTE: El coste de cada iteracion del bucle es constante, y este se recorre size veces.
-*   Por tanto, el coste del algoritmo pertenece a O(1) * size = O(size)
+ESPECIFICACION: fun resolver(vector<int>const&v, int size, int d) ret bool
+
+PRECONDICION: {
+    0 <= d <= 1.000.000
+    &&
+    1 <= size <= 200.00
+    &&
+    forall l : 0 <= l < size : v[l] > 0 && v[l] <= 1.000.000
+}
+
+POSTCONDICION: {
+    crecientes = (p,q : 0 <= p <= q < size - 1 : forall u : p <= u < q : v[u] < v[u + 1] : q - p)
+    &&
+    apta = exists w : 0 <= w < size - 1 : v[w] >= v[w + 1] && v[w] - v[w - crecientes] > d
+}
+
+INVARIANTE: {
+    0 <= i < size
+    &&
+    crecientes = (p,q : 0 <= p <= q < i : forall u1 : p <= u1 < q : v[u1] < v[u1 + 1] : q - p)
+    &&
+    apta = exists w1 : 0 <= w1 < i : v[w1] >= v[w1 + 1] && v[w1] - v[w1 - crecientes] > d
+}
+
+FUNCION DE COTA: size - i
+ANALISIS DEL COSTE: El coste de cada iteracion del bucle es constante, y este se recorre en el caso peor size - 1 veces (=== size).
+    Por tanto, el coste del algoritmo pertenece a O(1) * size = O(size)
 */
 
-int resolver(vector<int>const& v, int size, int k) {
-    // Si el numero maximo de elementos pares consecutivos es mayor o igual a la longitud del vector, se devuelve la longitud del vector
-    if (k >= size) return size;
-    int pares = 0, inicio = 0;
-    for (int i = 0; i < size; i++) {
-        if (v[i] % 2 == 0) {
-            pares++;
-            if (pares > k)
-                inicio = i - k + 1;
+bool resolver(vector<int>const& v, int size, int d) {
+    bool apta = true;
+    int i = 0, crecientes = 0;
+    while (i < size - 1 && apta) {
+        if (v[i] < v[i + 1]) {
+            crecientes++;
         }
-        else
-            pares = 0;
+        else {
+            apta = (v[i] - v[i - crecientes] <= d);
+            crecientes = 0;
+        }
+        i++;
     }
-    return size - inicio;
+    if (crecientes != 0)
+        apta = v[size - 1] - v[size - 1 - crecientes] <= d;
+    return apta;
 }
-
 
 bool resuelveCaso() {
-    int size, k; cin >> size >> k;
+    int size, d;
+    cin >> d >> size;
+    if (!cin) return false;
     vector<int> v(size);
     for (int& i : v)cin >> i;
-    cout << resolver(v, size, k) << "\n";
+    cout << (resolver(v, size, d) ? "" : "NO ") << "APTA\n";
     return true;
 }
-
 
 
 int main() {
@@ -72,12 +70,9 @@ int main() {
     auto cinbuf = std::cin.rdbuf(in.rdbuf());
 #endif
 
-    unsigned int numCasos;
-    std::cin >> numCasos;
-    // Resolvemos
-    for (int i = 0; i < numCasos; ++i) {
-        resuelveCaso();
-    }
+    while (resuelveCaso());
+
+    // restablecimiento de cin
 #ifndef DOMJUDGE
     std::cin.rdbuf(cinbuf);
     system("pause");
