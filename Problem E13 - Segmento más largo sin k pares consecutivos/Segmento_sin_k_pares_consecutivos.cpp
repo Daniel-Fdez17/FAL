@@ -8,7 +8,7 @@ using namespace std;
 * A) todosPares(v,p,q) = forall j : p <= j <= q : v[j] % 2 == 0
 * B) noMas(v,p,q,k) = todosPares(v,p,q) <=> q - p <= k
 * 
-* ESPECIFICACION: fun resolver(vector<int>const&v, int size, int k) ret int
+* ESPECIFICACION: fun resolver(vector<int>const&v, int size, int k) ret int (maxSeg)
 *
 * PRECONDICION: {
 * size >= 0
