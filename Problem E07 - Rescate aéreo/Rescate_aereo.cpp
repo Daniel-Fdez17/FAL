@@ -29,7 +29,7 @@ INVARIANTE: {
     &&
     fin = max w6 : (max p,q : 0 <= p <= q < i : (forall w7 : p <= w7 <= q : v[w7] > altura) : q - p)
 }
-
+ 
 FUNCION DE COTA: size - i
 ANALISIS DEL COSTE: El coste de cada iteración del bucle es constante, y este se recorre size veces.
     Por tanto, el coste del algoritmo pertenece a size * O(1) = O(size)
