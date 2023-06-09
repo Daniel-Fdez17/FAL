@@ -11,7 +11,7 @@ struct tsol {
 
 /* RECURRENCIA: sea n el numero de elementos de la fila de la matriz a procesar
     T(n) = c si 0 < n <= 2
-    T(n) = T(n/2) si n > 2
+    T(n) = 2T(n/2) si n > 2
     T(n) pertenece a O(n) en el caso peor (una imagen es un degradado)
     T(n) pertenece a O(log(n)) en el caso intermedio (la mitad izquierda de una imagen no es un degradado)
 */
