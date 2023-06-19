@@ -66,7 +66,7 @@ int resolver(const vector<int>& v, int l) {
 
 /*
 POSTCONDICION: {
-    r = # (u : l <= u < v.size() : ceros == unos)
+    r = # (u : l <= u < v.size() : CEROS(v, u - l + 1, u) == UNOS(v, u - l + 1, u))
 }
 */
 
